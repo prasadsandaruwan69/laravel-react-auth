@@ -34,6 +34,7 @@ class CarController extends Controller
         $imagePath = $request->file('image')->store('cars', 'public');
     }
        Car::create([
+        'user_id'=> $request->user_id,
         'name' => $request->name,
         'type' => $request->type,
         'price_per_day' => $request->price_per_day
@@ -48,6 +49,7 @@ class CarController extends Controller
         'email' => $request->email,
         'status' => $request->status,
         'image' => $imagePath,
+            'rating'       => $request->rating,
 
        ]);
 
@@ -55,19 +57,48 @@ class CarController extends Controller
 
  }
 
-   public function update(Request $request, $id)
-    {
-        try {
-            $car = Car::findOrFail($id);
-            $car->update($request->all());
-            return response()->json($car, 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to update car. Please try again.',
-                'error' => $e->getMessage()
-            ], 500);
+public function update(Request $request, $id)
+{
+    try {
+        $car = Car::findOrFail($id);
+
+        // Handle image update if exists
+        $imagePath = $car->image;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('cars', 'public');
         }
+
+        $car->update([
+            'user_id'      => $request->user_id,
+            'name'         => $request->name,
+            'type'         => $request->type,
+            'price_per_day'=> $request->price_per_day,
+            'location'     => $request->location,
+            'seats'        => $request->seats,
+            'fuel_type'    => $request->fuelType,  // ✅ map correctly
+            'transmission' => $request->transmission,
+            'company'      => $request->company,
+            'phone'        => $request->phone,
+            'email'        => $request->email,
+            'status'       => $request->status,
+            'image'        => $imagePath,
+            'rating'       => $request->rating,
+           
+        ]);
+
+        return response()->json([
+            'message' => 'Car updated successfully!',
+            'car' => $car
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Failed to update car. Please try again.',
+            'error'   => $e->getMessage()
+        ], 500);
     }
+}
+
 
     public function show($id)
     {

@@ -23,8 +23,10 @@
         $table->string('company')->nullable();
         $table->string('phone')->nullable();
         $table->string('email')->nullable();
+        $table->string('rating')->nullable();
         $table->string('status')->default('Available');
         $table->string('image')->nullable(); // optional
+        $table->text('user_id');
         $table->timestamps();
             });
         }

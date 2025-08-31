@@ -4,6 +4,7 @@ use App\Http\Controllers\HotelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\GuidsController;
 /*
@@ -16,6 +17,7 @@ use App\Http\Controllers\GuidsController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+  Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -47,4 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/hotels/{id}', [HotelController::class, 'show']);
     Route::put('/hotels/{id}', [HotelController::class, 'update']);
     Route::delete('/hotels/{id}', [HotelController::class, 'destroy']);
+
+
+    // Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+
 }); 

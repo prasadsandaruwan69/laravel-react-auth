@@ -9,27 +9,35 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'role' => 'required|string|max:50', // Default user type
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'role' => 'required|string|max:50',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role, // Default user type
-            'password' => Hash::make($request->password),
-        ]);
+    // Get the last inserted user's ID
+    $lastUser = User::latest('id')->first();
+    $nextId = $lastUser ? $lastUser->id + 1 : 1;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $user->createToken('auth_token')->plainTextToken
-        ]);
-    }
+    // Generate custom User ID (e.g., USR0001, USR0002)
+    $userId = 'USR' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+    $user = User::create([
+        'user_id' => $userId,
+        'name' => $request->name,
+        'email' => $request->email,
+        'role' => $request->role,
+        'password' => Hash::make($request->password),
+    ]);
+
+    return response()->json([
+        'user' => $user,
+        'token' => $user->createToken('auth_token')->plainTextToken
+    ]);
+}
 
     public function login(Request $request)
     {
