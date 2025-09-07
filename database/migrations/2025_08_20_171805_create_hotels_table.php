@@ -24,6 +24,7 @@ return new class extends Migration
         $table->text('price_per_day')->nullable();
         $table->text('room_type')->nullable();
         $table->text('description')->nullable();
+        $table->text('amenities')->nullable();
         $table->text('company')->nullable();
             $table->string('phone')->nullable();    // Contact number
             $table->string('email')->nullable();    // Contact email

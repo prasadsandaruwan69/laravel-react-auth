@@ -8,9 +8,18 @@ use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of hotels.
-     */
+       public function GetAllHotel()
+    {
+        try {
+            $hotels = Hotel::all();
+            return response()->json($hotels, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch cars. Please try again.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function index()
     {
         try {
@@ -40,6 +49,8 @@ class HotelController extends Controller
                 'room_type' => 'nullable|string|in:Single,Double,Suite',
                 'description' => 'nullable|string|max:255',
                 'company' => 'nullable|string|max:255',
+                                
+                'amenities'=>'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'email' => 'nullable|email|max:255',
                 'status' => 'nullable|string|in:Available,Booked,Maintenance',
@@ -62,6 +73,7 @@ class HotelController extends Controller
                 'number_of_rooms' => $request->number_of_rooms,
                 'room_type' => $request->room_type ?? 'Single',
                 'description' => $request->description,
+                'amenities' => $request->amenities,
                 'company' => $request->company,
                 'phone' => $request->phone,
                 'email' => $request->email,

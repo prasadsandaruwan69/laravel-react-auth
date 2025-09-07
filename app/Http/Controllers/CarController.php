@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+
+        public function GetAll()
+    {
+        try {
+            $cars = Car::all();
+            return response()->json($cars, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch cars. Please try again.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function index()
     {
         try {

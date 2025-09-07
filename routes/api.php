@@ -17,6 +17,11 @@ use App\Http\Controllers\GuidsController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/guids/all', [GuidsController::class, 'GetAllGuids']);
+Route::get('/hotels/all', [HotelController::class, 'GetAllHotel']);
+
+
+Route::get('/cars/all', [CarController::class, 'GetAll']);
   Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -53,4 +58,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 
-}); 
+});  

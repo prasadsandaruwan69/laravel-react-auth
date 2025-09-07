@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Storage;
 
 class GuidsController extends Controller
 {
+
+        public function GetAllGuids()
+    {
+        try {
+            $guids = Guid::all();
+            return response()->json($guids, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch cars. Please try again.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     // public function index()
     // {
     //     try {
